@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 
 
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Side panel loaded');
+});
 
 const buttonHandle = () => {
   const selection = window.getSelection();

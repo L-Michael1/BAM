@@ -4,12 +4,24 @@
   "version": "1.0",
   "manifest_version": 3,
   "action": {
-    "default_popup": "index.html",
+    "default_path": "panel.html",
     "default_title": "Bam"
   },
   "icons": {
     "16": "logo192.png",
     "48": "logo192.png",
     "128": "logo192.png"
+  },
+  
+  "permissions":[
+    "sidePanel"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+    
+  "side_panel": {
+    "default_path": "index.html"
   }
+
 }
