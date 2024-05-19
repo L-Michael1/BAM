@@ -1,17 +1,43 @@
-// Gets the button styles from content.css
-const link = document.createElement('link');
-link.rel = 'stylesheet';
-link.href = './content.css'; // linter error - works fine
-document.head.appendChild(link);
-
 // Create a button element
 const button = document.createElement('button');
 button.id = 'summarizeButton';
 button.textContent = 'Summarize';
-button.classList.add('summarizeButton');
-button.style.opacity = '0';
+button.classList.add('summarizeButtonStyle');
 
-// Add on on-click for the button
+// Style the button
+button.style.position = 'fixed';
+button.style.bottom = '30px';
+button.style.right = '30px';
+button.style.zIndex = '1000';
+button.style.padding = '10px 20px';
+button.style.backgroundColor = '#007bff';
+button.style.color = '#fff';
+button.style.fontFamily = 'Inter, sans-serif';
+button.style.border = 'none';
+button.style.borderRadius = '4px';
+button.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
+button.style.transition = 'opacity 0.5s ease';
+button.style.opacity = '0';
+button.style.pointerEvents = 'none';
+
+// Add hover styles
+button.style.cursor = 'pointer';
+button.addEventListener('mouseenter', () => {
+	button.style.backgroundColor = '#026fe3';
+})
+button.addEventListener('mouseleave', () => {
+	button.style.backgroundColor = "#007bff";
+})
+
+// Add active styles
+button.addEventListener('mousedown', () => {
+	button.style.backgroundColor = '#007bff';
+})
+button.addEventListener('mouseup', () => {
+	button.style.backgroundColor = '#026fe3';
+})
+
+// // Add on on-click for the button
 button.addEventListener('click', () => {
 	console.log(window.getSelection().toString());
 
