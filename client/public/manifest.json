@@ -8,9 +8,9 @@
     "default_title": "Recapify"
   },
   "icons": {
-    "16": "logo192.png",
-    "48": "logo192.png",
-    "128": "logo192.png"
+    "16": "RecapifyLogo.png",
+    "48": "RecapifyLogo.png",
+    "128": "RecapifyLogo.png"
   },
   "content_scripts": [
     {
