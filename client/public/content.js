@@ -1,7 +1,7 @@
 // Create a button element
 const button = document.createElement('button');
 button.id = 'summarizeButton';
-button.textContent = 'Summarize';
+button.textContent = 'Recapify';
 button.classList.add('summarizeButtonStyle');
 
 // Style the button
@@ -13,7 +13,7 @@ button.style.padding = '15px 20px';
 button.style.backgroundColor = '#a044fc';
 button.style.color = '#fff';
 button.style.fontFamily = 'Inter, sans-serif';
-button.style.fontSize = '1.1rem';
+button.style.fontSize = '18px';
 button.style.fontWeight = 'bold';
 button.style.border = 'none';
 button.style.borderRadius = '10px';
@@ -59,59 +59,50 @@ button.addEventListener('click', () => {
 				body: JSON.stringify({ text: selectedText })
 			})
 			.then(response => {
-				// Check if the response is unsuccessful
-				if (!response.ok) {
-					alert('There was an error with the summary');
-				}
-
 				// Returns the buttons functionality and styling from the loading phase
-				button.textContent = 'Summarize';
+				button.textContent = 'Recapify';
 				button.disabled = false;
 
 				// Parse the response as JSON
 				return response.json();
 			})
 			.then(data => {
-                let summary = data.summary;
-                let parsedSummary = summary.replace(/^[\n\s]+/, '');
+				// Retrieves the data and parses it it
+				let summary = data.summary;
+				let parsedSummary = summary.replace(/^[\n\s]+/, '');
 
+				// Creates an HTML modal to display the data
+				const modalHtml = `
+					<div id="modal" style="display: block; position: fixed; z-index: 2000; padding-top: 120px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
+					<div style="background-color: #fefefe; margin: auto; padding: 40px; border: 2px solid #525151; border-radius: 30px; width: 70%; position: relative">
+							<span class="close" style="color: #aaa; position: absolute; right: 40px; top: 25px; font-size: 28px; font-weight: bold; cursor: pointer">&times;</span>
+							<h2 style="margin-top: 10px; margin-bottom: 20px; font-size: 30px; color: black; font-weight: bold">Summary</h2>
+							<p id="summaryText" style="font-size: 16px; color: black">${parsedSummary}</p>
+						</div>
+					</div>
+				`;
+				
+				// Adds the HTML modal to the body
+				document.body.insertAdjacentHTML('beforeend', modalHtml);
 
-                // Create modal HTML
-                const modalHtml = `
-                  <div id="modal" style="display: block; position: fixed; z-index: 999; padding-top: 100px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
-                    <div style="background-color: #fefefe; margin: auto; padding: 20px; border: 1px solid #888; width: 80%;">
-                      <span class="close" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
-                      <h2>Summary</h2>
-                      <p id="summaryText">${parsedSummary}</p>
-                    </div>
-                  </div>
-                `;
-                
-                // Append modal HTML to body
-                document.body.insertAdjacentHTML('beforeend', modalHtml);
+				// When the close button is clicked closes the modal
+				document.querySelector('.close').addEventListener('click', () => {
+					document.getElementById('modal').remove();
+				});
 
-                // Close modal when close button is clicked
-                document.querySelector('.close').addEventListener('click', () => {
-                  document.getElementById('modal').remove();
-                });
-
-                // Close modal when clicking outside of it
-                window.addEventListener('click', (event) => {
-                  if (event.target === document.getElementById('modal')) {
-                    document.getElementById('modal').remove();
-                  }
-                });
-
-
-
-				// You can do whatever you want with the summary here
+				// When clicking outside the modal, closes it
+				window.addEventListener('click', (event) => {
+					if (event.target === document.getElementById('modal')) {
+						document.getElementById('modal').remove();
+					}
+				});
 			})
 			.catch(error => {
 				// Notifes the user of any errors with the call
-				alert('There was an error with the summary\n', error);
+				alert('Sorry, the selected text exceeds the max number of words.\n', error);
 
 				// Returns the buttons functionality and styling from the loading phase
-				button.textContent = 'Summarize';
+				button.textContent = 'Recapify';
 				button.disabled = false;
 			});
     } 
@@ -122,36 +113,6 @@ button.addEventListener('click', () => {
 
 // Append the button to the document body
 document.body.appendChild(button);
-
-
-
-const container = document.createElement('div');
-container.id = 'containerTest';
-container.style.width = '100%';
-container.style.height = '100%';
-container.style.position = 'fixed';
-container.style.display = 'flex';
-container.style.justifyContent = 'center';
-container.style.alignItems = 'center';
-container.style.backgroundColor = 'black';
-container.style.zIndex = '20';
-
-
-const paragraph = document.createElement('p');
-paragraph.id = 'TEST';
-container.appendChild(paragraph);
-
-const body = document.querySelector('body');
-// body.style.display = 'flex';
-// body.style.justifyContent = 'center';
-// body.style.alignItems = 'center';
-body.appendChild(container);
-
-
-
-
-
-
 
 // Listen for text selection events
 document.addEventListener('mouseup', () => {

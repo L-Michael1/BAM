@@ -1,32 +1,21 @@
 {
-  "name": "Scientific Journal Summarizer",
-  "description": "...",
+  "name": "Recapify",
+  "description": "Elevate your browsing experience with Recapify - an innovative AI-powered technology that summarizes any text on web pages with just a click. Get the most out of every page.",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
-    "default_path": "panel.html",
-    "default_title": "BAM Scientific Journal Summarizer"
+    "default_popup": "index.html",
+    "default_title": "Recapify"
   },
   "icons": {
     "16": "logo192.png",
     "48": "logo192.png",
     "128": "logo192.png"
   },
-  
-  "permissions":[
-    "sidePanel"
-  ],
-  "background": {
-    "service_worker": "background.js"
-  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
       "js": ["content.js"]
     }
-  ],
-  "side_panel": {
-    "default_path": "index.html"
-  }
-
+  ]
 }

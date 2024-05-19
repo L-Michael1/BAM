@@ -13,3 +13,7 @@ fastapi dev main.py
 pip install -r requirements.txt
 fastapi dev main.py
 ```
+
+# Requirements
+Requires a ".env" in the server directory
+In the ".env" requires a key "OPENAI_KEY=open ai key"
