@@ -39,13 +39,40 @@ button.addEventListener('mouseup', () => {
 
 // // Add on on-click for the button
 button.addEventListener('click', () => {
-	console.log(window.getSelection().toString());
-
-
-	// MAKE THE API CALL HERE **
-
-	
-})
+    // Get the selected text
+    const selectedText = window.getSelection().toString().trim();
+    
+    // Check if any text is selected
+    if (selectedText !== '') {
+        // Make the API call
+        fetch('http://127.0.0.1:8000/summarize-section', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: selectedText })
+        })
+        .then(response => {
+            // Check if the response is successful
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // Parse the response as JSON
+            return response.json();
+        })
+        .then(data => {
+            // Log the summary
+            console.log('Summary:', data.summary);
+            // You can do whatever you want with the summary here
+        })
+        .catch(error => {
+            // Log any errors that occur during the API call
+            console.error('Error:', error);
+        });
+    } else {
+        console.log('No text selected.');
+    }
+});
 
 // Append the button to the document body
 document.body.appendChild(button);

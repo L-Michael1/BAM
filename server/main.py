@@ -6,17 +6,31 @@ from dotenv import load_dotenv
 # from langchain_community.document_loaders import OnlinePDFLoader
 import os
 from io import BytesIO
-from PyPDF2 import PdfReader
-import openai 
+from PyPDF2 import PdfReader 
 
 import streamlit as st
 from langchain import OpenAI
 from langchain.docstore.document import Document
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.chains.summarize import load_summarize_chain
-
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 load_dotenv()
 app = FastAPI()
+
+# Allow requests from any origin
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["*"],
+)
+
+class TextRequest(BaseModel):
+    text: str
+
 
 def generate_response(txt):
     try:
@@ -74,15 +88,20 @@ async def create_pdf_summary(file: UploadFile = File(...)):
 async def create_file(file: Annotated[bytes, File()]):
     return {"file_size": len(file)}
 
+@app.get("/text")
+def read_hello(text: str):
+    print("meep")
+    return {"text": text}
+
 @app.post("/summarize-section")
-def create_section_summary(text: str):
+def create_section_summary(req: TextRequest):
     try:
-        text = "Cloud computing has become a widely exploited research area in academia and industry. Cloud computing benefits both cloud services providers (CSPs) and consumers. The security challenges associated with cloud computing have been widely studied in the literature. This systematic literature review (SLR) is aimed to review the existing research studies on cloud computing security, threats, and challenges."
+        text = req.text
         # Generate summary for the provided text
         summary = generate_response(text)
         
         # Return the summary
-        return JSONResponse(content={"content": text, "summary":summary})
+        return JSONResponse(content={"content": text, "summary": summary})
     
     except Exception as e:
-        raise RuntimeError(f"Error summarizing section: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error summarizing section: {str(e)}")

@@ -5,7 +5,7 @@
   "manifest_version": 3,
   "action": {
     "default_path": "panel.html",
-    "default_title": "Bam"
+    "default_title": "BAM Scientific Journal Summarizer"
   },
   "icons": {
     "16": "logo192.png",
